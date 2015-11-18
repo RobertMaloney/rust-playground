@@ -22,7 +22,12 @@ fn grab_words(len: usize, count: usize) -> Vec<String> {
   v
 }
 
+fn match_words(a: &String, b: &String) -> (usize, usize) {
+  (0,0)
+}
+
 fn main() {
+  let mut rng = thread_rng();
   let mut difficulty = String::new();
   print!("Select your difficulty (easy/medium/hard): ");
   io::stdout().flush().unwrap();
@@ -34,7 +39,18 @@ fn main() {
     "hard" => grab_words(7, 16),
     _ => panic!("Invalid difficulty!")
   };
-  for word in my_words {
+  for word in my_words.iter() {
     println!("{}", word);
+  }
+  let answer = my_words.get((rng.next_u32() as usize) % my_words.len()).unwrap();
+  println!("ANSWER: {}", answer);
+  let mut attempt = String::new();
+  loop {
+    print!("Select a word: ");
+    io::stdout().flush().unwrap();
+    io::stdin().read_line(&mut attempt).unwrap();
+    attempt.pop();
+    let (correct, total) = match_words(&answer, &attempt);
+    println!("Match: {}/{}", correct, total);
   }
 }
