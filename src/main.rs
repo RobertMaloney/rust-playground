@@ -10,7 +10,7 @@ fn grab_words(len: usize, count: usize) -> Vec<String> {
   let file_name = "words.txt";
   let f = File::open(file_name).unwrap();
   let br = BufReader::new(f);
-  let words: Vec<_> = br.lines().filter(|x| x.as_ref().unwrap().len() == len + 1).map(|x| x.unwrap()).collect();
+  let words: Vec<_> = br.lines().map(|x| x.unwrap()).filter(|x| x.len() == len + 1).collect();
   let domain_size = words.len();
   let mut v: Vec<String> = vec![];
   for _ in 0..count {
