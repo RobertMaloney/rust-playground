@@ -2,3 +2,6 @@
 name = "fallout-hacker"
 version = "0.1.0"
 authors = ["Robert Maloney <robert.maloney@mycase.com>"]
+
+[dependencies]
+rand="0.3"
