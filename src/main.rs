@@ -16,8 +16,9 @@ fn grab_words(len: usize, count: usize) -> Vec<String> {
   let mut v: Vec<String> = vec![];
   for _ in 0..count {
     let index = (rng.next_u32() as usize) % domain_size;
-    let s = words.get(index).unwrap();
-    v.push(s.clone());
+    let mut s = words.get(index).unwrap().clone();
+    s.pop(); // remove carriage return
+    v.push(s);
   }
   v
 }
@@ -67,6 +68,13 @@ fn main() {
     io::stdout().flush().unwrap();
     io::stdin().read_line(&mut attempt).unwrap();
     attempt.pop();
+
+    // check to make sure written word is an option
+    if !my_words.contains(&attempt) {
+      println!("That word is invalid.");
+      attempt.clear();
+      continue;
+    }
 
     let (correct, total) = match_words(&attempt, &answer);
     if correct == total {
