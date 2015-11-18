@@ -23,7 +23,13 @@ fn grab_words(len: usize, count: usize) -> Vec<String> {
 }
 
 fn match_words(a: &String, b: &String) -> (usize, usize) {
-  (0,0)
+  let mut correct: usize = 0;
+  let mut total: usize = 0;
+  for (x,y) in a.as_bytes().iter().zip(b.as_bytes().iter()) {
+    if x == y { correct += 1; }
+    total += 1;
+  };
+  (correct, total)
 }
 
 fn main() {
@@ -50,7 +56,8 @@ fn main() {
     io::stdout().flush().unwrap();
     io::stdin().read_line(&mut attempt).unwrap();
     attempt.pop();
-    let (correct, total) = match_words(&answer, &attempt);
+    let (correct, total) = match_words(&attempt, &answer);
     println!("Match: {}/{}", correct, total);
+    attempt.clear();
   }
 }
