@@ -61,14 +61,25 @@ fn main() {
 
   // loop as user attempts to find the correct word
   let mut attempt = String::new();
+  let mut attempts_left = 4;
   loop {
     print!("Select a word: ");
     io::stdout().flush().unwrap();
     io::stdin().read_line(&mut attempt).unwrap();
     attempt.pop();
+
     let (correct, total) = match_words(&attempt, &answer);
-    if correct == total { break; }
+    if correct == total {
+      println!("YOU WON!");
+      break;
+    }
+    attempts_left -= 1;
+    if attempts_left == 0 {
+      println!("YOU LOST!");
+      break;
+    }
     println!("Match: {}/{}", correct, total);
+    println!("Attempts remaining: {}", attempts_left);
     attempt.clear();
   }
 }
