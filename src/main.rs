@@ -57,6 +57,7 @@ fn main() {
     io::stdin().read_line(&mut attempt).unwrap();
     attempt.pop();
     let (correct, total) = match_words(&attempt, &answer);
+    if correct == total { break; }
     println!("Match: {}/{}", correct, total);
     attempt.clear();
   }
