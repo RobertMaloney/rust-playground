@@ -34,22 +34,32 @@ fn match_words(a: &String, b: &String) -> (usize, usize) {
 
 fn main() {
   let mut rng = thread_rng();
+
+  // request difficulty from the user
   let mut difficulty = String::new();
   print!("Select your difficulty (easy/medium/hard): ");
   io::stdout().flush().unwrap();
   io::stdin().read_line(&mut difficulty).unwrap();
   difficulty.pop(); // remove newline
+
+  // generate hack words depending on the difficulty
   let my_words: Vec<String> = match difficulty.as_ref() {
     "easy" => grab_words(4, 7),
     "medium" => grab_words(5, 13),
     "hard" => grab_words(7, 16),
     _ => panic!("Invalid difficulty!")
   };
+
+  // display potential answers
   for word in my_words.iter() {
     println!("{}", word);
   }
+
+  // select one to be the answer
   let answer = my_words.get((rng.next_u32() as usize) % my_words.len()).unwrap();
   println!("ANSWER: {}", answer);
+
+  // loop as user attempts to find the correct word
   let mut attempt = String::new();
   loop {
     print!("Select a word: ");
