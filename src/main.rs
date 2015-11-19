@@ -9,8 +9,8 @@ use rand::{thread_rng, Rng};
 fn grab_words(len: usize, count: usize) -> Vec<String> {
   let mut rng = thread_rng();
   let file_name = "words.txt";
-  let f = File::open(file_name).unwrap();
-  let br = BufReader::new(f);
+  let br = BufReader::new(File::open(file_name).unwrap());
+
   let words: Vec<_> = br.lines().map(|x| x.unwrap()).filter(|x| x.len() == len + 1).collect();
   let domain_size = words.len();
   (0..count).map(|_| {
