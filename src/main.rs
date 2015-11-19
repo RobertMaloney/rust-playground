@@ -16,7 +16,7 @@ fn grab_words(len: usize, count: usize) -> Vec<String> {
   (0..count).map(|_| {
     let index = (rng.next_u32() as usize) % domain_size;
     let mut s = words.get(index).unwrap().clone();
-    s.pop();
+    s.pop(); // remove CR
     s
   }).collect::<Vec<String>>()
 }
