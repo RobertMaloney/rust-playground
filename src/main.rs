@@ -22,13 +22,9 @@ fn grab_words(len: usize, count: usize) -> Vec<String> {
 }
 
 fn match_words(a: &String, b: &String) -> (usize, usize) {
-  let mut correct: usize = 0;
-  let mut total: usize = 0;
-  for (x,y) in a.as_bytes().iter().zip(b.as_bytes().iter()) {
-    if x == y { correct += 1; }
-    total += 1;
-  };
-  (correct, total)
+  let correct = a.as_bytes().iter().zip(b.as_bytes().iter())
+    .fold(0, |acc, (x, y)| acc + (x == y) as usize);
+  (correct, b.len())
 }
 
 fn main() {
