@@ -13,14 +13,12 @@ fn grab_words(len: usize, count: usize) -> Vec<String> {
   let br = BufReader::new(f);
   let words: Vec<_> = br.lines().map(|x| x.unwrap()).filter(|x| x.len() == len + 1).collect();
   let domain_size = words.len();
-  let mut v: Vec<String> = vec![];
-  for _ in 0..count {
+  (0..count).map(|_| {
     let index = (rng.next_u32() as usize) % domain_size;
     let mut s = words.get(index).unwrap().clone();
-    s.pop(); // remove carriage return
-    v.push(s);
-  }
-  v
+    s.pop();
+    s
+  }).collect::<Vec<String>>()
 }
 
 fn match_words(a: &String, b: &String) -> (usize, usize) {
