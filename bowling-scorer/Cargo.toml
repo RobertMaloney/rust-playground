@@ -1,0 +1,4 @@
+[package]
+name = "bowling-scorer"
+version = "0.1.0"
+authors = ["Robert Maloney <robert.maloney@mycase.com>"]
