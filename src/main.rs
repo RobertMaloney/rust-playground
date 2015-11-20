@@ -4,7 +4,8 @@ struct GameState {
   pub score: u32,
   pub spare_count: u32,
   pub strike_1: u32,
-  pub strike_2: u32
+  pub strike_2: u32,
+  pub previous_score: u32
 }
 
 impl GameState {
@@ -13,21 +14,38 @@ impl GameState {
       score: 0,
       spare_count: 0,
       strike_1: 0,
-      strike_2: 0
+      strike_2: 0,
+      previous_score: 0
     }
   }
 
-  fn update_state(self, ds: u32) -> GameState {
+  fn update_state(self, roll: char) -> GameState {
     let (mut sp, mut str1, mut str2) = (self.spare_count, self.strike_1, self.strike_2);
+    let ds = match roll {
+      '-' => 0,
+      '/' => 10 - self.previous_score,
+      'X' => 10,
+      _ => roll as u32 - '0' as u32
+    };
+
+    let weighted_score = ds * [sp, str1, str2].iter()
+      .map(|&x| (x > 0) as u32).fold(1, |acc, x| acc + x);
+
     if sp > 0 { sp -= 1; }
-    if str1 > 0 { str1 -= 1; }
     if str2 > 0 { str2 -= 1; }
+    str1 = str2;
+    match roll {
+      '/' => sp = 1,
+      'X' => str2 = 2,
+      _ => ()
+    }
 
     GameState {
-      score: self.score + ds,
+      score: self.score + weighted_score,
       spare_count: sp,
       strike_1: str1,
-      strike_2: str2
+      strike_2: str2,
+      previous_score: ds
     }
   }
 }
@@ -35,13 +53,7 @@ impl GameState {
 fn score(turns: &String) -> u32 {
   let final_game = turns.split_whitespace().fold(GameState::new(), |state, turn| {
     turn.chars().fold(state, |roll_state, roll_score| {
-      let marginal_score = match roll_score {
-        '-' => 0,
-        '/' => 0,
-        'X' => 0,
-        _ => 0
-      };
-      roll_state.update_state(marginal_score)
+      roll_state.update_state(roll_score)
     })
   });
   final_game.score
